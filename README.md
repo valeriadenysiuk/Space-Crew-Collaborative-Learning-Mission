@@ -35,15 +35,15 @@ The goal of this project is to:
 ##  Screenshots
 
 ### Main Screen
-![Rocket Fuel Dashboard](./screenshots/main_screen.png)  
+![Rocket Fuel Dashboard](https://github.com/valeriadenysiuk/Space-Crew-Collaborative-Learning-Mission/blob/main/MainScreen.png)  
 *Displays the central rocket with fuel percentage and timer.*
 
 ### Astronaut Profile
-![Astronaut Profile](./screenshots/astronaut_profile.png)  
+![Astronaut Profile](https://github.com/valeriadenysiuk/Space-Crew-Collaborative-Learning-Mission/blob/main/YourProfile.png)  
 *Shows individual astronaut stats and daily choices.*
 
 ### Add New Astronaut
-![Add Astronaut](./screenshots/add_astronaut.png)  
+![Add Astronaut](https://github.com/valeriadenysiuk/Space-Crew-Collaborative-Learning-Mission/blob/main/Settings.png)  
 *Panel for adding new astronauts to the crew.*
 
 ---
