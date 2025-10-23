@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning - Our Space Mission</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Animated star background for that cosmic vibe -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Side navigation panel - collapsed by default -->
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="sidebar-toggle" onclick="toggleSidebar()">☰</div>
+        <h3>Space Crew</h3>
+
+        <!-- Main navigation items -->
+        <div class="menu-item active" onclick="showCrewList()">
+            <span></span>
+            <span>All Astronauts</span>
+        </div>
+
+        <div class="menu-item" onclick="showResults()">
+            <span></span>
+            <span>Team Results</span>
+        </div>
+
+        <div class="menu-item" onclick="showSettings()">
+            <span></span>
+            <span>Settings</span>
+        </div>
+    </div>
+
+    <!-- Main content area - expands when sidebar collapses -->
+    <div class="main-content expanded" id="mainContent">
+        <!-- Countdown timer section at the top -->
+        <div class="timer-section">
+            <div class="timer" id="timer">23:59:59</div>
+            <div class="timer-label">Until Rocket Launch</div>
+        </div>
+
+        <!-- Central area with our majestic rocket -->
+        <div class="center-area">
+            <div class="rocket-container">
+                <div class="main-rocket" id="mainRocket" onclick="showRocketActions()">
+                    <img src="roc1.PNG" alt="Rocket"
+                        style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                </div>
+                <!-- Fuel gauge showing team progress -->
+                <div class="fuel-info">
+                    <div class="fuel-text">
+                        Fuel: <span id="fuel-amount">0.0</span> / <span id="fuel-max">9.6</span>
+                        <br><small style="opacity: 0.8;">Minimum for launch: 5.0</small>
+                    </div>
+                    <div class="fuel-bar-container">
+                        <div class="fuel-bar" id="fuel-bar" style="width: 70%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User profile avatar - click to view stats -->
+    <div class="user-profile" onclick="showProfile()">
+        <div class="user-avatar"></div>
+    </div>
+
+    <!-- User profile modal - shows personal learning stats -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('profileModal')">×</button>
+            <h2>Your Profile</h2>
+
+            <!-- Learning statistics dashboard -->
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="studyDays">12</div>
+                    <div class="stat-label">Study Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="missedDays">3</div>
+                    <div class="stat-label">Missed Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value score positive" id="totalScore">+9</div>
+                    <div class="stat-label">Total Score</div>
+                </div>
+            </div>
+
+            <!-- Daily check-in buttons -->
+            <div class="action-buttons" id="userActions">
+                <button class="btn btn-study" onclick="markStudied()">
+                    I Studied Today
+                </button>
+                <button class="btn btn-no-study" onclick="markNotStudied()">
+                    Didn't Study Today
+                </button>
+            </div>
+
+            <!-- Shows user's choice after they click a button -->
+            <div id="userChoice" style="text-align: center; margin: 15px 0; font-weight: 600;"></div>
+
+            <!-- Recent activity history -->
+            <div class="activity-history">
+                <h3 style="color: #64ffda; margin-bottom: 15px;">Activity History</h3>
+                <div class="activity-item">
+                    <span>Yesterday</span>
+                    <span style="color: #6bcf7f;">✅ Studied</span>
+                </div>
+                <div class="activity-item">
+                    <span>2 days ago</span>
+                    <span style="color: #6bcf7f;">✅ Studied</span>
+                </div>
+                <div class="activity-item">
+                    <span>3 days ago</span>
+                    <span style="color: #ff6b6b;">❌ Missed</span>
+                </div>
+                <div class="activity-item">
+                    <span>4 days ago</span>
+                    <span style="color: #6bcf7f;">✅ Studied</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crew members modal - shows all space cadets -->
+    <div class="modal" id="crewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('crewModal')">×</button>
+            <h2>Space Crew</h2>
+
+            <div class="crew-list" id="crewList">
+                <!-- Dynamically populated with JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Team results modal - shows collective progress -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+           <button class="modal-close" onclick="closeModal('resultsModal')">×</button>
+            <h2>Team Results</h2>
+
+            <!-- Team overview statistics -->
+            <div class="team-summary">
+                <h3>Overall Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Study Days</div>
+                        <div class="stat-value" id="totalStudyDays">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Missed Days</div>
+                        <div class="stat-value" id="totalMissedDays">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Total Score</div>
+                        <div class="stat-value" id="teamTotalScore">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Average Score</div>
+                        <div class="stat-value" id="averageScore">0.0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Successful Launches</div>
+                        <div class="stat-value" id="successfulLaunches">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Failed Launches</div>
+                        <div class="stat-value" id="failedLaunches">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed crew member results -->
+            <div class="crew-results">
+                <h3>Member Statistics</h3>
+                <div class="results-header">
+                    <div>Statistics</div>
+                    <div>Member</div>
+                    <div>Points</div>
+                </div>
+                <div id="crewResultsList" class="crew-results-list">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Individual member profile modal -->
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('memberModal')">×</button>
+            <h2 id="memberTitle">Member Profile</h2>
+
+            <!-- Member-specific statistics -->
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="memberStudyDays">0</div>
+                    <div class="stat-label">Study Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="memberMissedDays">0</div>
+                    <div class="stat-label">Missed Days</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value score" id="memberScore">0</div>
+                    <div class="stat-label">Total Score</div>
+                </div>
+            </div>
+
+            <!-- Admin actions for member management -->
+            <div class="action-buttons" id="memberActions">
+                <button class="btn btn-study" onclick="markMemberStudied()">
+                    Studied Today
+                </button>
+                <button class="btn btn-no-study" onclick="markMemberNotStudied()">
+                    Didn't Study Today
+                </button>
+            </div>
+
+            <!-- Shows choice made for this member -->
+            <div id="memberChoice" style="text-align: center; margin: 15px 0; font-weight: 600;"></div>
+        </div>
+    </div>
+
+    <!-- Settings modal for team management -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('settingsModal')">×</button>
+            <h2>Settings</h2>
+
+            <div style="margin: 30px 0;">
+                <h3 style="color: #64ffda; margin-bottom: 20px;">Add New Astronaut</h3>
+
+                <!-- New member form -->
+                <div style="margin-bottom: 15px;">
+                    <input type="text" id="newMemberName" placeholder="Astronaut Name" style="width: 100%; padding: 12px; background: rgba(255,255,255,0.1); 
+                                  border: 1px solid rgba(100,255,218,0.3); border-radius: 10px; 
+                                  color: white; font-size: 1rem;">
+                </div>
+
+                <!-- Avatar upload section -->
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <div class="avatar-preview" id="avatarPreview" style="display: none;"></div>
+                    <label class="upload-btn">
+                        Upload Photo
+                        <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                    </label>
+                </div>
+
+                <button class="btn btn-study" onclick="addNewMember()" style="width: 100%; margin-bottom: 20px;">
+                    Add to Team
+                </button>
+
+                <!-- Fun space academy oath for new members -->
+                <div id="oathSection"
+                    style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                    <h4 style="color: #ffd700; text-align: center; margin-bottom: 15px;">
+                        🌟 Space Academy Oath 🌟
+                    </h4>
+                    <div style="font-style: italic; text-align: center; line-height: 1.6; color: #64ffda;">
+                        "I, <span id="oathName">new astronaut</span>, solemnly swear:<br>
+                        To study every day with enthusiasm<br>
+                        To support the team in difficult moments<br>
+                        To never give up when facing challenges<br>
+                        To share knowledge with comrades<br>
+                        To strive for new discoveries<br><br>
+                        <strong>May the cosmic force be with me!</strong>"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
